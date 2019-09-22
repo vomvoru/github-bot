@@ -9,8 +9,6 @@ RUN apk add git
 # 앱 디렉터리 생성
 WORKDIR /usr/src/app
 
-RUN npm i -g madge
-
 # 앱 소스 추가
 COPY . .
 # COPY .env .env
