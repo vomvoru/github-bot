@@ -27,6 +27,8 @@
     "github": "^12.1.0",
     "glob": "^7.0.3",
     "gvpr": "file:gvpr",
+    "jscpd": "^2.0.15",
+    "jscpd-md-reporter": "file:jscpd-md-reporter",
     "lru-cache": "^4.0.1",
     "madge": "^3.4.4",
     "querystring": "^0.2.0",
