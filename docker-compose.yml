@@ -7,6 +7,6 @@ services:
     #   - .:/usr/src/app
     command: node server.js
     expose:
-      - "3000"
+      - "80"
     ports:
-      - "3000:3000"
+      - "80:80"

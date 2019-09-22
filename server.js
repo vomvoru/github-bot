@@ -19,7 +19,7 @@ if (process.env.NODE_REPO_DIR) {
 }
 
 const app = require('./app')
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 80
 
 app.listen(port, () => {
   logger.info('Listening on port', port)

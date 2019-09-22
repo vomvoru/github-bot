@@ -20,6 +20,6 @@ RUN npm install
 # RUN npm ci --only=production
 
 # Expose is NOT supported by Heroku
-EXPOSE 3000
+EXPOSE 80
 
 # CMD ["node", "server.js" ]
