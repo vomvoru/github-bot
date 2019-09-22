@@ -36,7 +36,9 @@ async function createMadgeDot({ cloneUrl, branchName, sha }) {
     return '';
   }
 
-  const dot = await madgeLib.createDot(require('../.temp/github-bot-madgerc'));
+  const config = require('../.temp/github-bot-madgerc');
+  debug('github-bot-madgerc %o', config);
+  const dot = await madgeLib.createDot(config);
 
   await execWithDebug(`rm -rf ${TEMP_DIR_NAME}`, { cwd: ROOT });
 
