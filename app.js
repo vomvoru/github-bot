@@ -1,7 +1,5 @@
 'use strict'
 
-require('dotenv').load({ silent: true })
-
 const glob = require('glob')
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -17,7 +15,9 @@ const app = express()
 const scriptsToLoad = process.env.SCRIPTS || './scripts/**/*.js'
 const logsDir = process.env.LOGS_DIR || ''
 
-app.use(bodyParser.json({ verify: captureRaw }))
+app.use(bodyParser.json({ verify: captureRaw }));
+
+app.use('/static', express.static('public'));
 
 if (logsDir) {
   app.use('/logs', authMiddleware, express.static(logsDir))

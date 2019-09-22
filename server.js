@@ -1,5 +1,7 @@
 'use strict'
 
+require('dotenv').load({ silent: true })
+
 const logger = require('./lib/logger')
 const { spawnSync } = require('child_process')
 
@@ -16,8 +18,8 @@ if (process.env.NODE_REPO_DIR) {
   }
 }
 
-const port = process.env.PORT || 3000
 const app = require('./app')
+const port = process.env.PORT || 3000
 
 app.listen(port, () => {
   logger.info('Listening on port', port)
