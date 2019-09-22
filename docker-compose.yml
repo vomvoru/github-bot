@@ -1,0 +1,12 @@
+
+version: '3'
+services:
+  server:
+    build: .
+    # volumes:
+    #   - .:/usr/src/app
+    command: node server.js
+    expose:
+      - "3000"
+    ports:
+      - "3000:3000"
