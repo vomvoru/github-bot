@@ -20,4 +20,4 @@ RUN npm install
 # Expose is NOT supported by Heroku
 EXPOSE 80
 
-# CMD ["nodemon", "server.js" ]
+# CMD ["npm", "start" ]

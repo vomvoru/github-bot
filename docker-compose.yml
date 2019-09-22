@@ -5,7 +5,7 @@ services:
     build: .
     # volumes:
     #   - .:/usr/src/app
-    command: nodemon server.js
+    command: npm start
     expose:
       - "80"
     ports:
