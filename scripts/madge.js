@@ -36,7 +36,21 @@ async function createMadgeDot({ cloneUrl, branchName, sha }) {
     return '';
   }
 
-  const config = require('../.temp/github-bot-madgerc');
+  const orgConfig = require('../.temp/github-bot-madgerc');
+  const tsConfig = orgConfig.tsConfig ? JSON.parse(fs.readFileSync(orgConfig.tsConfig)) : false;
+  const config = {
+    ...orgConfig,
+    ...tsConfig && {
+      tsConfig: {
+        ...tsConfig,
+        compilerOptions: {
+          ...tsConfig.compilerOptions,
+          baseUrl: TEMP,
+        }
+      }
+    }
+  }
+  
   debug('github-bot-madgerc %o', config);
   const dot = await madgeLib.createDot(config);
 
@@ -98,6 +112,6 @@ const handleSynchronize = handlePullCreated;
 
 module.exports = (app) => {
   app.on('pull_request.opened', handlePullCreated);
-  app.on('pull_request.edited', handlePullReopen);
+  app.on('pull_request.reopened', handlePullReopen);
   app.on('pull_request.synchronize', handleSynchronize);
 }
