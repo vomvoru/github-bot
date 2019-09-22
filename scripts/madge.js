@@ -1,5 +1,6 @@
 const util = require('util');
 const path = require('path');
+const fs = require('fs');
 const exec = util.promisify(require('child_process').exec);
 const { createPrComment } = require('../lib/github-comment');
 const querystring = require("querystring");
@@ -26,6 +27,14 @@ async function createMadgeDot({ cloneUrl, branchName, sha }) {
   await execWithDebug(`rm -rf ${TEMP_DIR_NAME}`, { cwd: ROOT });
   await execWithDebug(`mkdir -p ${TEMP_DIR_NAME}`, { cwd: ROOT });
   await execWithDebug(`git clone -b ${branchName} --single-branch ${cloneUrl} .`, { cwd: TEMP });
+
+  try {
+    if (!fs.existsSync(path.resolve(TEMP, 'github-bot-madgerc.js'))) {
+      return '';
+    }
+  } catch(err) {
+    return '';
+  }
 
   const dot = await madgeLib.createDot(require('../.temp/github-bot-madgerc'));
 
