@@ -80,14 +80,14 @@ const handlePullCreated = async (event, owner, repo) => {
   const oldJscpdMd = await createJscpd({
     cloneUrl: event.repository.clone_url,
     branchName: event.pull_request.base.ref,
-    blobs_url: blobs_url.replace('{/sha}', `/${sha}`)
+    blobs_url: blobs_url.replace('{/sha}', `/${event.pull_request.base.sha}`)
   });
 
   debug('create newscpdMd');
   const newscpdMd = await createJscpd({
     cloneUrl: event.repository.clone_url,
     branchName: event.pull_request.head.ref,
-    blobs_url: blobs_url.replace('{/sha}', `/${sha}`)
+    blobs_url: blobs_url.replace('{/sha}', `/${event.pull_request.head.sha}`)
   });
 
   debug('getBody');
