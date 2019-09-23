@@ -26,7 +26,7 @@ MdReporter.prototype.report = function(clones, statistic) {
 
     table.push(convertStatisticToArray('Total', statistic.total));
 
-    const result = [mdTable(table),'','<details><summary>show detail</summary><p>',...this.detail,'</p></details>'].join('\n');
+    const result = [mdTable(table),'','<details><summary>show detail</summary><p>', '',...this.detail,'</p></details>'].join('\n');
 
     ensureDirSync(this.options.output);
     writeFileSync(join(this.options.output, 'index.md'), result, 'utf-8');
@@ -35,7 +35,7 @@ MdReporter.prototype.report = function(clones, statistic) {
 
 MdReporter.prototype.cloneFound = function(clone) {
   const { duplicationA, duplicationB, format } = clone;
-  this.detail.push('Clone found (' + format + '):' + (clone.isNew ? red('*') : ''));
+  this.detail.push('Clone found (' + format + '):' + (clone.isNew ? '*' : ''));
   this.detail.push(
     ` - ${duplicationA.sourceId} [${getSourceLocation(
       duplicationA.start,

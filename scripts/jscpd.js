@@ -22,7 +22,7 @@ const execWithDebug = async (...args) => {
   return stdout;
 }
 
-async function createJscpd({ cloneUrl, branchName, blobs_url }) {
+async function createJscpd({ html_url, cloneUrl, branchName }) {
   // await execWithDebug(`rm -rf .jscpd`, { cwd: ROOT });
   await execWithDebug(`rm -rf ${TEMP_DIR_NAME}`, { cwd: ROOT });
   await execWithDebug(`mkdir -p ${TEMP_DIR_NAME}`, { cwd: ROOT });
@@ -65,6 +65,7 @@ async function createJscpd({ cloneUrl, branchName, blobs_url }) {
 
   await execWithDebug(`rm -rf ${TEMP_DIR_NAME}`, { cwd: ROOT });
 
+  const blobs_url = `${html_url}/blob/${branchName}/`;
   md = md.replace(/\/usr\/src\/app\/\.temp\//g, blobs_url);
   md = md.replace(/ \[(\d+)\:\d+ \- (\d+)\:\d+\]/g,(match, startLineNumber, endLineNumber) => `#L${startLineNumber}-L${endLineNumber}`);
   md = md.replace(new RegExp(`${escape(blobs_url)}([^\n]+)`, 'g'), (match, path) => `[${path}](${match})`);
@@ -78,16 +79,16 @@ const handlePullCreated = async (event, owner, repo) => {
 
   debug('create oldJscpdMd');
   const oldJscpdMd = await createJscpd({
+    html_url: event.repository.html_url,
     cloneUrl: event.repository.clone_url,
     branchName: event.pull_request.base.ref,
-    blobs_url: blobs_url.replace('{/sha}', `/${event.pull_request.base.sha}`)
   });
 
   debug('create newscpdMd');
   const newscpdMd = await createJscpd({
+    html_url: event.repository.html_url,
     cloneUrl: event.repository.clone_url,
     branchName: event.pull_request.head.ref,
-    blobs_url: blobs_url.replace('{/sha}', `/${event.pull_request.head.sha}`)
   });
 
   debug('getBody');
