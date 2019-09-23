@@ -41,7 +41,11 @@ async function createJscpd({ cloneUrl, branchName, sha }) {
 
   // 아래 이슈로 강제 close 해야 하는 코드
   // https://github.com/kucherenko/jscpd/issues/207
-  await getStoreManager().close();
+  debug('close store');
+  try{
+    await getStoreManager().close();
+  }catch(e){ }
+  
 
   const options = {
     mode: 'strict',
@@ -49,10 +53,13 @@ async function createJscpd({ cloneUrl, branchName, sha }) {
     output: path.resolve(TEMP, 'report'),
   };
 
+  debug('new JSCPD');
   const cpd = new JSCPD(options);
 
+  debug('detectInFiles %o', config.files);
   await cpd.detectInFiles(config.files);
 
+  debug('get md file');
   const md = fs.readFileSync(path.resolve(TEMP, 'report', 'index.md'), 'utf8')
 
   await execWithDebug(`rm -rf ${TEMP_DIR_NAME}`, { cwd: ROOT });
@@ -61,23 +68,27 @@ async function createJscpd({ cloneUrl, branchName, sha }) {
 }
 
 const handlePullCreated = async (event, owner, repo) => {
-  const { number, logger } = event;
+  const { number } = event;
   const options = { owner, repo, pull_number: number };
 
+  debug('create oldJscpdMd');
   const oldJscpdMd = await createJscpd({
     cloneUrl: event.repository.clone_url,
     branchName: event.pull_request.base.ref,
     sha: event.pull_request.base.sha,
   });
 
+  debug('create newscpdMd');
   const newscpdMd = await createJscpd({
     cloneUrl: event.repository.clone_url,
     branchName: event.pull_request.head.ref,
     sha: event.pull_request.head.sha,
   });
 
+  debug('getBody');
   const body = getBody(oldJscpdMd, newscpdMd);
 
+  debug('createPrComment');
   createPrComment(options, body);
 }
 
