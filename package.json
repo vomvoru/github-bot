@@ -30,7 +30,7 @@
     "jscpd": "^2.0.15",
     "jscpd-md-reporter": "file:jscpd-md-reporter",
     "lru-cache": "^4.0.1",
-    "madge": "^3.4.4",
+    "madge": "^4.0.1",
     "querystring": "^0.2.0",
     "request": "^2.88.0"
   },
